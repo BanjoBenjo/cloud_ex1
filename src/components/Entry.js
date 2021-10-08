@@ -7,6 +7,7 @@ const Entry = ({ entry, onDelete }) => {
       <h3>{entry.text} 
         <FaTimes style={{ color:'red', cursor: 'pointer'}} onClick={() => onDelete(entry.id)}/>
       </h3>
+      <img src={entry.file} alt="img" width="200" height="200"/>
     </div>
   )
 }

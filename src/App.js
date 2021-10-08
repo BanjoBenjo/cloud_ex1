@@ -6,20 +6,7 @@ import { useState } from 'react'
 
 function App() {
   const [showAddEntry, setShowAddEntry] = useState(false)
-  const [entries, setEntries] = useState([
-    {
-      id: 1,
-      text: 'First Entry'
-    },
-    {
-      id: 2,
-      text: 'Second Entry'
-    },
-    {
-      id: 3,
-      text: 'Third Entry'
-    }
-  ])
+  const [entries, setEntries] = useState([])
 
 const addEntry = (entry) => {
   let id = 1
