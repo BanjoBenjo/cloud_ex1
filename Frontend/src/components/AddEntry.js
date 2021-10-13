@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from 'react'
 
 const AddEntry = ({ onAdd }) => {
-  const [text, setText] = useState('')
+  const [name, setName] = useState('')
   const [file, setFile] = useState(undefined)
 
   const handleSelectFile = e => {
@@ -16,7 +16,7 @@ const AddEntry = ({ onAdd }) => {
   const onSubmit = (e) => {
     e.preventDefault()
 
-    if(!text) {
+    if(!name) {
       alert('Please add an Entry')
       return
     }
@@ -28,8 +28,8 @@ const AddEntry = ({ onAdd }) => {
 
     const objectUrl = URL.createObjectURL(file)
 
-    onAdd({text, file: objectUrl})
-    setText('')
+    onAdd({name, file: objectUrl})
+    setName('')
     setFile(null)
   }
 
@@ -39,8 +39,8 @@ const AddEntry = ({ onAdd }) => {
         <label>Name</label>
         <input 
           type='text' 
-          value={text} 
-          onChange={(e) => setText(e.target.value)} 
+          value={name} 
+          onChange={(e) => setName(e.target.value)} 
           placeholder='Add Name' />
       </div>
       <div className='form-control' >

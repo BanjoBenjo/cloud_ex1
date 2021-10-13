@@ -1,33 +1,65 @@
 import Header from "./components/Header";
 import Entries from "./components/Entries";
 import AddEntry from "./components/AddEntry";
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 
 function App() {
   const [showAddEntry, setShowAddEntry] = useState(false)
   const [entries, setEntries] = useState([])
+  const [isLoaded, setIsLoaded] = useState(false)
 
-const addEntry = (entry) => {
-  let id = 1
+  const getUrl = '/api/entries'
+  const postUrl = '/api/save'
+  const deleteUrl = (id) => `api/delete/${id}`
 
-  if (entries.length > 0) {
-     id = entries[entries.length - 1].id + 1
+  const getEntries = () => {
+    fetch(getUrl)
+      .then(rspn => rspn.json())
+      .then(json => {
+        setEntries(json);
+        setIsLoaded(true);
+      })
   }
 
-  const newEntry = {id, ...entry}
-  setEntries([...entries, newEntry])
-}
+  useEffect(() => {
+    getEntries();
+    }, []);
+
+
+  const addEntry = (entry) => {
+    setIsLoaded(false);
+
+    fetch(postUrl, {
+      method: 'POST', // or 'PUT'
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(entry),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+
+      getEntries();
+  }
 
   const deleteEntry = (id) => {
-    setEntries(entries.filter((entry) => entry.id !== id ))
+    setIsLoaded(false);
+
+    fetch(deleteUrl(id), { method: 'DELETE' })
+        .then(() => getEntries() );
   }
 
   return (
     <div className='container'>
       <Header onAdd={() => setShowAddEntry(!showAddEntry)}/>
       {showAddEntry && <AddEntry onAdd={addEntry}/>}
-      {entries.length > 0 ? <Entries entries={entries} onDelete={deleteEntry}/> : 'No Entries'}
+      { isLoaded ? <Entries entries={entries} onDelete={deleteEntry}/> : 'Loading ...'}
     </div>
   );
 }

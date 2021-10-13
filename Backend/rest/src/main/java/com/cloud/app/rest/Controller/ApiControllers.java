@@ -18,18 +18,18 @@ public class ApiControllers {
         return "Welcome";
     }
 
-    @GetMapping(value = "/entries")
+    @GetMapping(value = "api/entries")
     public List<Entry> getEntries() {
         return entryRepo.findAll();
     }
 
-    @PostMapping(value = "/save")
+    @PostMapping(value = "api/save")
     public String saveEntry(@RequestBody Entry entry) {
         entryRepo.save(entry);
         return "Saved...";
     }
 
-    @PutMapping(value = "/update/{id}")
+    @PutMapping(value = "api/update/{id}")
     public String updateEntry(@PathVariable long id, @RequestBody Entry entry) {
         Entry updatedEntry = entryRepo.findById(id).get();
 
@@ -39,7 +39,7 @@ public class ApiControllers {
         return "Updated...";
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(value = "api/delete/{id}")
     public String deleteEntry(@PathVariable long id) {
         entryRepo.deleteById(id);
         return "Deleted...";
